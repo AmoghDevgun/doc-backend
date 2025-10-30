@@ -1,9 +1,9 @@
 import mongoose from "mongoose"
-import { config } from "./env.ts"
+import { config } from "./env"
 import postgres from "postgres"
 
 // --- PostgreSQL Connection ---
-const sql = postgres(process.env.DATABASE_URL)
+const sql = postgres(process.env.DATABASE_URL!)
 
 // --- MongoDB Connection ---
 async function connectMongo()

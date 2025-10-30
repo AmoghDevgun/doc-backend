@@ -5,4 +5,3 @@ export function errorHandler(err, _req, res, _next) {
     res.status(status).json({ message });
 }
 export default errorHandler;
-//# sourceMappingURL=errorHandler.js.map

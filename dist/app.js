@@ -1,12 +1,12 @@
 import express from "express";
 import cors from "cors";
-import { connectMongo } from "./config/db.ts";
-import { config } from "./config/env.ts";
-import errorHandler from "./middleware/errorHandler.ts";
-import authRoutes from "./routes/authRoutes.ts";
-import appointmentRoutes from "./routes/appointmentRoutes.ts";
-import voiceRoutes from './routes/voiceRoutes.ts';
-import recordsRoutes from "./routes/recordsRoutes.ts";
+import { connectMongo } from "./config/db";
+import { config } from "./config/env";
+import errorHandler from "./middleware/errorHandler";
+import authRoutes from "./routes/authRoutes";
+import appointmentRoutes from "./routes/appointmentRoutes";
+import voiceRoutes from './routes/voiceRoutes';
+import recordsRoutes from "./routes/recordsRoutes";
 /*
 import appointmentRoutes from "./routes/appointmentRoutes.ts"
 import doctorRoutes from "./routes/doctorRoutes.ts"
@@ -37,4 +37,3 @@ app.use("/api/voice", voiceRoutes)
 */
 const PORT = config.port;
 app.listen(PORT, () => console.log(`🚀 Server running on ${PORT}`));
-//# sourceMappingURL=app.js.map

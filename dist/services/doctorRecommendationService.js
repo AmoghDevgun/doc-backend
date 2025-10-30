@@ -1,4 +1,4 @@
-import Doctor from "../models/Doctor.ts";
+import Doctor from "../models/Doctor";
 export async function getDoctorRecommendations(specialization) {
     try {
         const doctors = await Doctor.find({ specialization })
@@ -22,4 +22,3 @@ export async function getDoctorRecommendations(specialization) {
         return [];
     }
 }
-//# sourceMappingURL=doctorRecommendationService.js.map

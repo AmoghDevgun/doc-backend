@@ -1,7 +1,7 @@
 import { Router } from "express"
-import { register, login } from "../controllers/authController.ts"
-import { asyncHandler } from "../middleware/asyncHandler.ts"
-import { validateLogin, validateRegister } from "../middleware/validators/auth.ts"
+import { register, login } from "../controllers/authController"
+import { asyncHandler } from "../middleware/asyncHandler"
+import { validateLogin, validateRegister } from "../middleware/validators/auth"
 
 const router = Router()
 

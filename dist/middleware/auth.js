@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { config } from "../config/env.ts";
+import { config } from "../config/env";
 export function requireAuth(req, res, next) {
     const auth = req.headers.authorization || "";
     const [scheme, token] = auth.split(" ");
@@ -8,7 +8,6 @@ export function requireAuth(req, res, next) {
     }
     try {
         const payload = jwt.verify(token, config.jwtSecret);
-        // @ts-expect-error augment at runtime
         req.user = { userId: payload.userId, username: payload.username };
         return next();
     }
@@ -17,4 +16,3 @@ export function requireAuth(req, res, next) {
     }
 }
 export default requireAuth;
-//# sourceMappingURL=auth.js.map

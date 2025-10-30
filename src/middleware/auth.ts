@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { config } from "../config/env.ts";
+import { config } from "../config/env";
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
 	const auth = req.headers.authorization || "";
@@ -10,7 +10,6 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 	}
 	try {
 		const payload = jwt.verify(token, config.jwtSecret) as { userId: string; username: string };
-		// @ts-expect-error augment at runtime
 		req.user = { userId: payload.userId, username: payload.username };
 		return next();
 	} catch {

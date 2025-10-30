@@ -16,4 +16,3 @@ export const config = {
     supabaseBucket: process.env.SUPABASE_BUCKET || "voice-audio",
 };
 export default config;
-//# sourceMappingURL=env.js.map

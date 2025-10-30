@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import Doctor from "../models/Doctor.ts";
-import { config } from "../config/env.ts";
+import Doctor from "../models/Doctor";
+import { config } from "../config/env";
 const specializations = [
     "Cardiology",
     "Neurology",
@@ -64,4 +64,3 @@ async function populateDoctors() {
     }
 }
 populateDoctors();
-//# sourceMappingURL=populateDoctors.js.map

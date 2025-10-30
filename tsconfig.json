@@ -1,26 +1,21 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
     "target": "ES2020",
-    "lib": ["esnext"],
-    "types": ["node"],
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowImportingTsExtensions": true,
-    "esModuleInterop": true
-  }
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipDefaultLibCheck": true,
+    "noImplicitAny": false
+  },
+  "include": ["src"]
 }
+
 /*{
   "compilerOptions": {
     "rootDir": "./src",

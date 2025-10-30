@@ -1,10 +1,10 @@
-import { detectIntent } from "../services/intentService.ts";
-import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService.ts";
-import { textToSpeech } from "../services/voiceAssistantService.ts";
-import Appointment from "../models/Appointment.ts";
-import Doctor from "../models/Doctor.ts";
-import Record from "../models/Records.ts";
-import User from "../models/Users.ts";
+import { detectIntent } from "../services/intentService";
+import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService";
+import { textToSpeech } from "../services/voiceAssistantService";
+import Appointment from "../models/Appointment";
+import Doctor from "../models/Doctor";
+import Record from "../models/Records";
+import User from "../models/Users";
 export async function processVoice(req, res) {
     try {
         const { text } = req.body;
@@ -25,7 +25,7 @@ export async function processVoice(req, res) {
         switch (intentName) {
             // 🩺 AI symptom analysis
             case "symptomAnalysis":
-                responseText = await analyzeSymptomsWithAI(text);
+                responseText = (await analyzeSymptomsWithAI(text)) ?? "";
                 break;
             // 👨‍⚕️ Check available doctors
             case "getAvailableDoctors":
@@ -175,4 +175,3 @@ export async function processVoice(req, res) {
         });
     }
 }
-//# sourceMappingURL=voiceController.js.map

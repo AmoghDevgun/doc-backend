@@ -7,4 +7,3 @@ const medicineSchema = new Schema({
     prescribedBy: { type: String } // doctor’s name
 });
 export default model("Medicine", medicineSchema);
-//# sourceMappingURL=Medicine.js.map

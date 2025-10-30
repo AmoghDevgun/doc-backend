@@ -4,4 +4,3 @@ export function asyncHandler(fn) {
     };
 }
 export default asyncHandler;
-//# sourceMappingURL=asyncHandler.js.map

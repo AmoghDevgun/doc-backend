@@ -12,4 +12,3 @@ const appointmentSchema = new Schema({
     }
 });
 export default model("Appointment", appointmentSchema);
-//# sourceMappingURL=Appointment.js.map

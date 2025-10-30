@@ -7,6 +7,14 @@ const userSchema = new Schema({
     gender: { type: String },
     address: { type: String },
     phone: { type: String },
-}, { timestamps: true, versionKey: false, toJSON: { transform(_doc, ret) { delete ret.password; return ret; } } });
+}, {
+    timestamps: true,
+    versionKey: false,
+    toJSON: {
+        transform(_doc, ret) {
+            delete ret.password;
+            return ret;
+        }
+    }
+});
 export default model("User", userSchema);
-//# sourceMappingURL=Users.js.map

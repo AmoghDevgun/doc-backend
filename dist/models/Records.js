@@ -10,4 +10,3 @@ const RecordSchema = new Schema({
     meta: { type: Schema.Types.Mixed }
 });
 export default mongoose.models.Record || mongoose.model("Record", RecordSchema);
-//# sourceMappingURL=Records.js.map

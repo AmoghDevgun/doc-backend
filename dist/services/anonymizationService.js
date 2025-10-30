@@ -7,4 +7,3 @@ export function anonymizeData(symptoms) {
     text = text.replace(/(street|road|city|block|avenue)/gi, '[LOCATION]');
     return text;
 }
-//# sourceMappingURL=anonymizationService.js.map

@@ -38,4 +38,3 @@ Return only the text, well-formatted and readable.
         throw new Error(error?.message || "Failed to summarize report with AI");
     }
 }
-//# sourceMappingURL=reportSummarizerService.js.map

@@ -37,4 +37,3 @@ const doctorSchema = new Schema({
     }
 });
 export default model("Doctor", doctorSchema);
-//# sourceMappingURL=Doctor.js.map

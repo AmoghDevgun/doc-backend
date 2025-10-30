@@ -27,4 +27,3 @@ export async function analyzeSymptomsWithAI(symptomData) {
     });
     return completion.choices[0]?.message.content;
 }
-//# sourceMappingURL=symptomAnalysisService.js.map

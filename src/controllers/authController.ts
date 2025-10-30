@@ -1,8 +1,8 @@
 import type { Request, Response } from "express"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
-import User from "../models/Users.ts"
-import { config } from "../config/env.ts"
+import User from "../models/Users"
+import { config } from "../config/env"
 
 export async function register(req: Request, res: Response) {
     try
@@ -49,7 +49,7 @@ export async function login(req: Request, res: Response) {
             return res.status(400).json({ message: "Invalid credentials" })
         }
 
-        const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = await bcrypt.compare(password, user.password as string)
         if (!isMatch)
         {
             return res.status(400).json({ message: "Invalid credentials" })

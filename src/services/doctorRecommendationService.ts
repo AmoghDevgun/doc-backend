@@ -1,4 +1,4 @@
-import Doctor from "../models/Doctor.ts";
+import Doctor from "../models/Doctor";
 
 export async function getDoctorRecommendations(specialization: string)
 {

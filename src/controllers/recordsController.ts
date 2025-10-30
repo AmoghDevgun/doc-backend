@@ -6,10 +6,10 @@ import fs from "fs"
 // Use the main package import for Node.js
 import * as pdfjsLib from "pdfjs-dist"
 
-import Record from "../models/Records.ts"
-import User from "../models/Users.ts"
-import { anonymizeData } from "../services/anonymizationService.ts"
-import { summarizeReportWithAI } from "../services/reportSummarizerService.ts"
+import Record from "../models/Records"
+import User from "../models/Users"
+import { anonymizeData } from "../services/anonymizationService"
+import { summarizeReportWithAI } from "../services/reportSummarizerService"
 
 const UPLOAD_DIR = path.resolve("./uploads/reports")
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true })

@@ -1,8 +1,8 @@
-import { anonymizeData } from "../services/anonymizationService.ts";
-import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService.ts";
-import { textToSpeech } from "../services/voiceAssistantService.ts";
-import Appointment from "../models/Appointment.ts";
-import Doctor from "../models/Doctor.ts";
+import { anonymizeData } from "../services/anonymizationService";
+import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService";
+import { textToSpeech } from "../services/voiceAssistantService";
+import Appointment from "../models/Appointment";
+import Doctor from "../models/Doctor";
 /* -------------------- ANALYZE SYMPTOMS -------------------- */
 export async function analyzeSymptoms(req, res) {
     try {
@@ -227,4 +227,3 @@ export async function cancelAppointment(req, res) {
         });
     }
 }
-//# sourceMappingURL=appointmentController.js.map

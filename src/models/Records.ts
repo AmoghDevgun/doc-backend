@@ -1,15 +1,24 @@
-import { Schema, model, Types } from "mongoose"
+// src/models/Records.ts
+import mongoose, { Schema, Document } from "mongoose";
 
-const recordSchema = new Schema({
-    userId: { type: Types.ObjectId, ref: "User", required: true },
-    doctorId: { type: Types.ObjectId, ref: "Doctor" },
-    diagnosis: { type: String },
-    reports: [{
-        name: String,
-        url: String, // path to uploaded report
-        date: Date
-    }],
-    summary: { type: String } // simplified explanation from Aasha
-})
+export interface IRecord extends Document {
+  userId: mongoose.Types.ObjectId;
+  originalFilename: string;
+  filePath: string;
+  uploadedAt: Date;
+  anonymizedText?: string;
+  aiSummary?: string;
+  meta?: Record<string, any>;
+}
 
-export default model("Record", recordSchema)
+const RecordSchema = new Schema<IRecord>({
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  originalFilename: { type: String, required: true },
+  filePath: { type: String, required: true },
+  uploadedAt: { type: Date, default: () => new Date() },
+  anonymizedText: { type: String },
+  aiSummary: { type: String },
+  meta: { type: Schema.Types.Mixed }
+});
+
+export default mongoose.models.Record || mongoose.model<IRecord>("Record", RecordSchema);

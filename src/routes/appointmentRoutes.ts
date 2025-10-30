@@ -4,7 +4,8 @@ import {
 	bookAppointment,
 	getUserAppointments,
 	cancelAppointment,
-    getAvailableDoctors
+    getAvailableDoctors,
+    analyzeSymptomsVoice
 } from "../controllers/appointmentController.ts"
 
 const router = express.Router()
@@ -12,6 +13,7 @@ const router = express.Router()
 router.post("/analyze", analyzeSymptoms)
 router.post("/book", bookAppointment)
 router.post("/available", getAvailableDoctors)
+router.post("/analyzeVoice", analyzeSymptomsVoice)
 router.get("/user/:userId", getUserAppointments)
 router.put("/cancel/:appointmentId", cancelAppointment)
 

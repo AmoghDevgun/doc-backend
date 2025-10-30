@@ -2,6 +2,7 @@ import type { Request, Response } from "express"
 import { anonymizeData } from "../services/anonymizationService.ts"
 import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService.ts"
 import { getDoctorRecommendations } from "../services/doctorRecommendationService.ts"
+import { textToSpeech } from "../services/voiceAssistantService.ts"
 import Appointment from "../models/Appointment.ts"
 import Doctor from "../models/Doctor.ts"
 
@@ -41,6 +42,63 @@ export async function analyzeSymptoms(req: Request, res: Response)
 			data: {
 				summary: aiResponse,
 				doctorType
+			}
+		})
+	}
+	catch (err)
+	{
+		console.error("Error analyzing symptoms:", err)
+		return res.status(500).json({
+			success: false,
+			message: "Internal server error",
+			error: (err as Error).message
+		})
+	}
+}
+
+export async function analyzeSymptomsVoice(req: Request, res: Response)
+{
+	try
+	{
+		const { symptoms } = req.body
+
+		if (!symptoms || typeof symptoms !== "string")
+		{
+			return res.status(400).json({
+				success: false,
+				message: "Invalid or missing symptoms input"
+			})
+		}
+
+		// Step 1: anonymize data
+		const anonymizedData = anonymizeData(symptoms)
+
+		// Step 2: analyze with AI
+		const aiResponse = await analyzeSymptomsWithAI(anonymizedData)
+
+		if (!aiResponse)
+		{
+			return res.status(500).json({
+				success: false,
+				message: "AI analysis failed"
+			})
+		}
+
+		// Step 3: Extract doctor type from AI response
+		const doctorMatch = aiResponse.match(/Doctor:\s*([A-Za-z\s]+)/i)
+		const doctorType = doctorMatch?.[1]?.trim() || "General Physician"
+
+		// Step 4: Convert AI reply → speech 🎙️
+		const audioPath = await textToSpeech(aiResponse)
+
+		// Step 5: Respond with both text and audio
+		return res.status(200).json({
+			success: true,
+			message: "Symptoms analyzed successfully",
+			data: {
+				summary: aiResponse,
+				doctorType,
+				audioFile: audioPath   // 👈 path to generated mp3
 			}
 		})
 	}

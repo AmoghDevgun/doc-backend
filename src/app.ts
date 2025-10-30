@@ -6,6 +6,8 @@ import connectDB from "./config/db.ts"
 
 import authRoutes from "./routes/authRoutes.ts"
 import appointmentRoutes from "./routes/appointmentRoutes.ts"
+import voiceRoutes from './routes/voiceRoutes.ts'
+import recordsRoutes from "./routes/recordsRoutes.ts";
 /*
 import appointmentRoutes from "./routes/appointmentRoutes.ts"
 import doctorRoutes from "./routes/doctorRoutes.ts"
@@ -27,6 +29,8 @@ connectDB()
 
 app.use("/api/auth", authRoutes)
 app.use("/api/appointments", appointmentRoutes)
+app.use("/api/voice", voiceRoutes)
+app.use("/api/records", recordsRoutes);
 
 /*
 app.use("/api/appointments", appointmentRoutes)

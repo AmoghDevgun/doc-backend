@@ -1,14 +1,29 @@
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js"
-import fs from "fs"
-import path from "path"
 import { Readable } from "stream"
-import dotenv from "dotenv"
+import { createClient } from "@supabase/supabase-js"
+import { config } from "../config/env.ts"
 
-dotenv.config()
+const elevenlabs = new ElevenLabsClient({ apiKey: process.env.ELEVENLABS_API_KEY })
+const supabase = createClient(config.supabaseUrl, config.supabaseServiceKey)
 
-const elevenlabs = new ElevenLabsClient({
-	apiKey: process.env.ELEVENLABS_API_KEY
-})
+async function ensureBucket(): Promise<void> {
+	try {
+		const { data: buckets, error: listErr } = await supabase.storage.listBuckets()
+		if (listErr) throw listErr
+		const exists = buckets?.some(b => b.name === config.supabaseBucket)
+		if (!exists) {
+			const { error: createErr } = await supabase.storage.createBucket(config.supabaseBucket, {
+				public: true,
+				fileSizeLimit: "50MB",
+				allowedMimeTypes: ["audio/mpeg", "audio/mp3"],
+			})
+			if (createErr) throw createErr
+		}
+	} catch (e) {
+		// If bucket APIs are restricted, surface the error to caller
+		throw e
+	}
+}
 
 export async function textToSpeech(text: string)
 {
@@ -22,41 +37,41 @@ export async function textToSpeech(text: string)
 			outputFormat: "mp3_44100_128"
 		})
 
-		// Convert stream to buffer
+		// Convert stream to a single Buffer
 		const reader = audio.getReader()
+		const chunks: Buffer[] = []
 		const stream = new Readable({
 			async read()
 			{
 				const { done, value } = await reader.read()
-				if (done)
-				{
-					this.push(null)
-				}
-				else
-				{
-					this.push(value)
-				}
+				if (done) { this.push(null) }
+				else { this.push(value) }
 			}
 		})
-
-		// Save file locally
-		const outputDir = path.resolve("./tmp")
-		if (!fs.existsSync(outputDir))
-		{
-			fs.mkdirSync(outputDir)
-		}
-
-		const filePath = path.join(outputDir, `aasha-${Date.now()}.mp3`)
-		const writeStream = fs.createWriteStream(filePath)
-
 		await new Promise<void>((resolve, reject) =>
 		{
-			stream.pipe(writeStream)
+			stream.on("data", (chunk) => chunks.push(Buffer.from(chunk)))
 			stream.on("end", resolve)
 			stream.on("error", reject)
 		})
+		const buffer = Buffer.concat(chunks)
 
-		return filePath
+		// Ensure bucket exists (public) then upload to Supabase Storage
+		await ensureBucket()
+		const filename = `aasha-${Date.now()}.mp3`
+		const pathInBucket = `voice/${filename}`
+		const { error: uploadError } = await supabase
+			.storage
+			.from(config.supabaseBucket)
+			.upload(pathInBucket, buffer, { contentType: "audio/mpeg", upsert: true })
+		if (uploadError) { throw uploadError }
+
+		const { data: publicUrlData } = supabase
+			.storage
+			.from(config.supabaseBucket)
+			.getPublicUrl(pathInBucket)
+
+		return publicUrlData.publicUrl
 	}
 	catch (err)
 	{

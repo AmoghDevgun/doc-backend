@@ -20,6 +20,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "@supabase/supabase-js": "^2.47.10",
     "mongoose": "^8.19.2",
     "multer": "^2.0.2",
     "node-fetch": "^3.3.2",
@@ -30,6 +31,7 @@
     "pdf-text-extract": "^1.5.0",
     "pdf2json": "^4.0.0",
     "pdfjs-dist": "^4.10.38",
+    "postgres": "^3.4.7",
     "tesseract.js": "^6.0.1"
   },
   "devDependencies": {

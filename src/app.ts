@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"
-import connectDB from "./config/db.ts"
+import { connectMongo } from "./config/db.ts"
 import { config } from "./config/env.ts"
 import errorHandler from "./middleware/errorHandler.ts"
 
@@ -23,7 +23,7 @@ app.use(cors())
 app.use(express.json())
 
 
-connectDB()
+connectMongo()
 
 
 app.use("/api/auth", authRoutes)

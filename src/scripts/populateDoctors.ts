@@ -1,8 +1,6 @@
 import mongoose from "mongoose"
 import Doctor from "../models/Doctor.ts"
-import dotenv from "dotenv"
-
-dotenv.config()
+import { config } from "../config/env.ts"
 
 const specializations = [
 	"Cardiology",
@@ -29,7 +27,7 @@ async function populateDoctors()
 {
 	try
 	{
-		await mongoose.connect("mongodb+srv://amoghdevguntech_db_user:7J2H3wjDR6A7Td6c@cluster0.fydfpyt.mongodb.net/")
+		await mongoose.connect(config.mongoUri)
 		console.log("✅ Connected to MongoDB")
 
 		await Doctor.deleteMany({})

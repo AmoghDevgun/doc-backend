@@ -78,7 +78,30 @@ export async function detectIntent(userText: string): Promise<IntentResult>
 	}
 
 	// =============================
-	// 5️⃣ UNKNOWN INTENT
+	// 5️⃣ CANCEL APPOINTMENT
+	// =============================
+	if (match(["cancel appointment", "delete appointment", "remove appointment"])) {
+		const idMatch = text.match(/([a-f0-9]{24})/)
+		return { intent: "cancelAppointment", confidence: 0.9, details: { appointmentId: idMatch?.[1] || "" } }
+	}
+
+	// =============================
+	// 6️⃣ GET ALL USER RECORDS
+	// =============================
+	if (match(["my records", "show records", "show reports", "list reports", "medical records"])) {
+		return { intent: "getAllUserRecords", confidence: 0.9 }
+	}
+
+	// =============================
+	// 7️⃣ GET RECORD SUMMARY BY ID
+	// =============================
+	if (match(["record", "report"]) && /summary|details|show|open|read/.test(text)) {
+		const idMatch = text.match(/([a-f0-9]{24})/)
+		return { intent: "getRecordSummary", confidence: 0.85, details: { recordId: idMatch?.[1] || "" } }
+	}
+
+	// =============================
+	// 8️⃣ UNKNOWN INTENT
 	// =============================
 	return { intent: "unknown", confidence: 0.3 }
 }

@@ -174,7 +174,8 @@ export async function bookAppointment(req: Request, res: Response)
 {
 	try
 	{
-		const { userId, doctorId, date, time, reason } = req.body
+		const { doctorId, date, time, reason } = req.body
+		const userId = req.user?.userId || req.body.userId
 
 		if (!userId || !doctorId || !date || !time)
 		{
@@ -226,17 +227,13 @@ export async function getUserAppointments(req: Request, res: Response)
 {
 	try
 	{
-		const { userId } = req.params
-
-		if (!userId)
+		const tokenUserId = req.user?.userId
+		if (!tokenUserId)
 		{
-			return res.status(400).json({
-				success: false,
-				message: "User ID is required"
-			})
+			return res.status(401).json({ success: false, message: "Unauthorized" })
 		}
 
-		const appointments = await Appointment.find({ userId }).sort({ date: 1 })
+		const appointments = await Appointment.find({ userId: tokenUserId }).sort({ date: 1 })
 
 		return res.status(200).json({
 			success: true,

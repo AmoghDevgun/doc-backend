@@ -5,13 +5,18 @@ import { getAvailableDoctors } from "./appointmentController.ts"
 import { textToSpeech } from "../services/voiceAssistantService.ts"
 import Appointment from "../models/Appointment.ts"
 import Doctor from "../models/Doctor.ts"
+import Record from "../models/Records.ts"
 import User from "../models/Users.ts"
 
 export async function processVoice(req: Request, res: Response)
 {
 	try
 	{
-		const { text, userName } = req.body
+		const { text } = req.body
+		if (!req.user) {
+			return res.status(401).json({ success: false, message: "Unauthorized" })
+		}
+		const username = req.user.username
 
 		if (!text)
 		{
@@ -52,7 +57,12 @@ export async function processVoice(req: Request, res: Response)
 					break
 				}
 
-				responseData = await getAvailableDoctors(specialization, date, time)
+				// Compute available doctors directly (controller version expects req/res)
+				const selectedDate = new Date(date)
+				const doctors = await Doctor.find({ specialization, available: true })
+				const bookedAppointments = await Appointment.find({ date: selectedDate, time }).select("doctorId")
+				const bookedDoctorIds = bookedAppointments.map(a => a.doctorId.toString())
+				responseData = doctors.filter(doc => !bookedDoctorIds.includes(doc._id.toString()))
 
 				if (!responseData || responseData.length === 0)
 				{
@@ -84,7 +94,7 @@ export async function processVoice(req: Request, res: Response)
 
 				// 🧍‍♂️ Get user and doctor by name
 				const doctor = await Doctor.findOne({ name: new RegExp(doctorName, "i") })
-				const user = await User.findOne({ name: new RegExp(userName, "i") })
+				const user = await User.findOne({ name: new RegExp(username, "i") })
 
 				if (!doctor || !user)
 				{
@@ -104,10 +114,65 @@ export async function processVoice(req: Request, res: Response)
 				break
 			}
 
+			// ❌ Cancel appointment
+			case "cancelAppointment":
+			{
+				const appointmentId = details?.appointmentId || text.match(/([a-f0-9]{24})/)?.[1]
+				if (!appointmentId) {
+					responseText = "Please provide the appointment ID to cancel."
+					break
+				}
+				const appt = await Appointment.findById(appointmentId)
+				if (!appt) {
+					responseText = "I couldn't find that appointment."
+					break
+				}
+				// Ensure the appointment belongs to the requesting user
+				if (String(appt.userId) !== String(req.user!.userId)) {
+					responseText = "You can only cancel your own appointments."
+					break
+				}
+				appt.status = "cancelled"
+				await appt.save()
+				responseText = "Your appointment has been cancelled."
+				responseData = { appointmentId }
+				break
+			}
+
+			// 🗂️ Get all user records
+			case "getAllUserRecords":
+			{
+				const records = await Record.find({ userId: req.user!.userId })
+					.select("_id originalFilename aiSummary uploadedAt")
+					.sort({ uploadedAt: -1 })
+				responseData = records
+				responseText = records.length ? `Found ${records.length} records.` : "You don't have any records."
+				break
+			}
+
+			// 📄 Get one record summary by ID
+			case "getRecordSummary":
+			{
+				const recordId = details?.recordId || text.match(/([a-f0-9]{24})/)?.[1]
+				if (!recordId) {
+					responseText = "Please provide the record ID."
+					break
+				}
+				const record = await Record.findOne({ _id: recordId, userId: req.user!.userId })
+					.select("_id originalFilename aiSummary uploadedAt")
+				if (!record) {
+					responseText = "I couldn't find that record for your account."
+					break
+				}
+				responseData = record
+				responseText = `Here is the summary for ${record.originalFilename}.`
+				break
+			}
+
 			// 📋 Get user's upcoming appointments
 			case "getUserAppointments":
 			{
-				const user = await User.findOne({ name: new RegExp(userName, "i") })
+				const user = await User.findOne({ name: new RegExp(username, "i") })
 				if (!user)
 				{
 					responseText = "User not found."

@@ -7,14 +7,16 @@ import {
     getAvailableDoctors,
     analyzeSymptomsVoice
 } from "../controllers/appointmentController.ts"
+import { asyncHandler } from "../middleware/asyncHandler.ts"
+import requireAuth from "../middleware/auth.ts"
 
 const router = express.Router()
 
-router.post("/analyze", analyzeSymptoms)
-router.post("/book", bookAppointment)
-router.post("/available", getAvailableDoctors)
-router.post("/analyzeVoice", analyzeSymptomsVoice)
-router.get("/user/:userId", getUserAppointments)
-router.put("/cancel/:appointmentId", cancelAppointment)
+router.post("/analyze", asyncHandler(analyzeSymptoms))
+router.post("/book", requireAuth, asyncHandler(bookAppointment))
+router.post("/available", asyncHandler(getAvailableDoctors))
+router.post("/analyzeVoice", asyncHandler(analyzeSymptomsVoice))
+router.get("/user", requireAuth, asyncHandler(getUserAppointments))
+router.put("/cancel/:appointmentId", requireAuth, asyncHandler(cancelAppointment))
 
 export default router

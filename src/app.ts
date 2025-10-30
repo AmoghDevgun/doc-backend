@@ -1,8 +1,8 @@
 import express from "express"
 import cors from "cors"
-import dotenv from "dotenv"
 import connectDB from "./config/db.ts"
-
+import { config } from "./config/env.ts"
+import errorHandler from "./middleware/errorHandler.ts"
 
 import authRoutes from "./routes/authRoutes.ts"
 import appointmentRoutes from "./routes/appointmentRoutes.ts"
@@ -17,7 +17,6 @@ import reminderRoutes from "./routes/reminderRoutes.ts"
 import voiceRoutes from "./routes/voiceRoutes.ts"
 */
 
-dotenv.config()
 const app = express()
 
 app.use(cors())
@@ -32,6 +31,12 @@ app.use("/api/appointments", appointmentRoutes)
 app.use("/api/voice", voiceRoutes)
 app.use("/api/records", recordsRoutes);
 
+app.get("/health", (_req, res) => {
+	res.status(200).json({ ok: true })
+})
+
+app.use(errorHandler)
+
 /*
 app.use("/api/appointments", appointmentRoutes)
 app.use("/api/doctors", doctorRoutes)
@@ -41,5 +46,5 @@ app.use("/api/reminder", reminderRoutes)
 app.use("/api/voice", voiceRoutes)
 */
 
-const PORT = process.env.PORT || 5000
+const PORT = config.port
 app.listen(PORT, () => console.log(`🚀 Server running on ${PORT}`))

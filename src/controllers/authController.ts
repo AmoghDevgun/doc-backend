@@ -2,11 +2,9 @@ import type { Request, Response } from "express"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import User from "../models/Users.ts"
+import { config } from "../config/env.ts"
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey"
-
-export async function register(req: Request, res: Response)
-{
+export async function register(req: Request, res: Response) {
     try
     {
         const { name, email, password, age, address, gender, phone } = req.body
@@ -19,7 +17,7 @@ export async function register(req: Request, res: Response)
         }
 
         // hash password
-        const salt = await bcrypt.genSalt(10)
+		const salt = await bcrypt.genSalt(12)
         const hashedPassword = await bcrypt.hash(password, salt)
 
         const newUser = new User({
@@ -32,17 +30,16 @@ export async function register(req: Request, res: Response)
             phone
         })
 
-        await newUser.save()
-        res.status(201).json({ message: "User registered successfully" }) // TODO: redirect to main Page
+		await newUser.save()
+		res.status(201).json({ message: "User registered successfully" })
     }
     catch (err)
     {
-        res.status(500).json({ message: "Server error", error: err })
+		res.status(500).json({ message: "Server error" })
     }
 }
 
-export async function login(req: Request, res: Response)
-{
+export async function login(req: Request, res: Response) {
     try
     {
         const { email, password } = req.body
@@ -59,25 +56,21 @@ export async function login(req: Request, res: Response)
         }
 
         // create token
-        const token = jwt.sign(
-            { id: user._id, email: user.email },
-            JWT_SECRET,
-            { expiresIn: "7d" }
-        )
+		const token = jwt.sign({ userId: user._id, username: user.name }, config.jwtSecret, { expiresIn: "7d" })
 
-        res.json({
-            message: "Login successful",
-            token,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email
-            }
-        })
-    }
-    catch (err)
-    {
-        res.status(500).json({ message: "Server error", error: err })
-    }
+		res.json({
+			message: "Login successful",
+			token,
+			user: {
+				userId: user._id,
+				username: user.name,
+				email: user.email
+			}
+		})
+	}
+	catch (_err)
+	{
+		res.status(500).json({ message: "Server error" })
+	}
 }
 

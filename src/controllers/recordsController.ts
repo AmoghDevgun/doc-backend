@@ -41,28 +41,19 @@ export const uploadAndAnalyzeReport = [
                 })
             }
 
-            const { userId, userName } = req.body
-            let user = null
-
-            if (userId)
-            {
-                user = await User.findById(userId)
-            }
-            else if (userName)
-            {
-                user = await User.findOne({ name: new RegExp(userName, "i") })
-            }
-            else
-            {
-                user = await User.findOne()
-            }
+			const tokenUserId = req.user?.userId
+			if (!tokenUserId) {
+				if (req.file?.path) { try { fs.unlinkSync(req.file.path) } catch { /* ignore */ } }
+				return res.status(401).json({ success: false, message: "Unauthorized" })
+			}
+			const user = await User.findById(tokenUserId)
 
             if (!user)
             {
                 fs.unlinkSync(file.path)
-                return res.status(404).json({
+				return res.status(404).json({
                     success: false,
-                    message: "User not found. Provide userId or userName."
+					message: "User not found."
                 })
             }
 
@@ -173,20 +164,11 @@ export const getRecordSummary = async (req: Request, res: Response) => {
 //
 export const getAllUserRecords = async (req: Request, res: Response) => {
     try {
-        const { userId, userName } = req.body;
-        let user = null;
-
-        // Find the user, just like in the upload controller
-        if (userId) {
-            user = await User.findById(userId);
-        } else if (userName) {
-            user = await User.findOne({ name: new RegExp(userName, "i") });
-        } else {
-            return res.status(400).json({
-                success: false,
-                message: "User not specified. Provide userId or userName."
-            });
+        const tokenUserId = req.user?.userId;
+        if (!tokenUserId) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
         }
+        const user = await User.findById(tokenUserId);
 
         if (!user) {
             return res.status(404).json({

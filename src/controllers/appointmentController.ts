@@ -150,7 +150,7 @@ export async function getAvailableDoctors(req: Request, res: Response)
 		const bookedDoctorIds = bookedAppointments.map(a => a.doctorId.toString())
 
 		// 3️⃣ Filter out booked doctors
-		const availableDoctors = doctors.filter(doc => !bookedDoctorIds.includes(doc._id.toString()))
+		const availableDoctors = doctors.filter((doc: any) => !bookedDoctorIds.includes(doc._id!.toString()))
 
 		return res.status(200).json({
 			success: true,

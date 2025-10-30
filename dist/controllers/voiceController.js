@@ -46,7 +46,7 @@ export async function processVoice(req, res) {
                     const doctors = await Doctor.find({ specialization, available: true });
                     const bookedAppointments = await Appointment.find({ date: selectedDate, time }).select("doctorId");
                     const bookedDoctorIds = bookedAppointments.map(a => a.doctorId.toString());
-                    responseData = doctors.filter(doc => !bookedDoctorIds.includes(doc._id.toString()));
+                    responseData = doctors.filter((doc) => !bookedDoctorIds.includes(doc._id.toString()));
                     if (!responseData || responseData.length === 0) {
                         responseText = `No available ${specialization}s found for ${date} at ${time}.`;
                     }
@@ -62,7 +62,7 @@ export async function processVoice(req, res) {
                     const dateMatch = text.match(/\b(\d{4}-\d{2}-\d{2})\b/);
                     const timeMatch = text.match(/\b(\d{1,2}(:\d{2})?\s*(am|pm)?)\b/i);
                     if (!doctorNameMatch || !dateMatch || !timeMatch) {
-                        responseText = "I couldn’t find the doctor name, date, or time in your request.";
+                        responseText = "I couldn't find the doctor name, date, or time in your request.";
                         break;
                     }
                     const doctorName = doctorNameMatch[1].trim();

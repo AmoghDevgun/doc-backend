@@ -1,6 +1,7 @@
 import { Schema, model, Types } from "mongoose"
 
 const appointmentSchema = new Schema({
+    // @ts-ignore
     userId: { type: Types.ObjectId, ref: "User", required: true },
     doctorId: { type: Types.ObjectId, ref: "Doctor", required: true },
     date: { type: Date, required: true },

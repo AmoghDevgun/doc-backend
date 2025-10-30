@@ -62,7 +62,7 @@ export async function processVoice(req: Request, res: Response)
 				const doctors = await Doctor.find({ specialization, available: true })
 				const bookedAppointments = await Appointment.find({ date: selectedDate, time }).select("doctorId")
 				const bookedDoctorIds = bookedAppointments.map(a => a.doctorId.toString())
-				responseData = doctors.filter(doc => !bookedDoctorIds.includes(doc._id.toString()))
+				responseData = doctors.filter((doc: any) => !bookedDoctorIds.includes(doc._id!.toString()))
 
 				if (!responseData || responseData.length === 0)
 				{
@@ -84,7 +84,7 @@ export async function processVoice(req: Request, res: Response)
 
 				if (!doctorNameMatch || !dateMatch || !timeMatch)
 				{
-					responseText = "I couldn’t find the doctor name, date, or time in your request."
+					responseText = "I couldn't find the doctor name, date, or time in your request."
 					break
 				}
 

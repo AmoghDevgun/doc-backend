@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+// 👇 Use type assertion to completely bypass inference
 const doctorSchema = new Schema({
     name: { type: String, required: true },
     specialization: { type: String, required: true },
@@ -6,19 +7,17 @@ const doctorSchema = new Schema({
     experience: { type: Number, default: 0 },
     available: { type: Boolean, default: true },
     availability: {
-        // Specific availability by date
         specificDates: [
             {
                 date: { type: Date, required: true },
                 timeSlots: [
                     {
                         start: { type: String, required: true },
-                        end: { type: String, required: true } // e.g. "12:00 PM"
+                        end: { type: String, required: true }
                     }
                 ]
             }
         ],
-        // Recurring weekly availability (e.g., every Monday)
         recurring: [
             {
                 dayOfWeek: {

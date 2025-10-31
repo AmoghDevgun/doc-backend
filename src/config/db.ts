@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { config } from "./env"
+import { config } from "./env.js"
 import postgres from "postgres"
 
 // --- PostgreSQL Connection ---

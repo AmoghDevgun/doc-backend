@@ -1,7 +1,7 @@
 import express from "express";
-import { analyzeSymptoms, bookAppointment, getUserAppointments, cancelAppointment, getAvailableDoctors, analyzeSymptomsVoice } from "../controllers/appointmentController";
-import { asyncHandler } from "../middleware/asyncHandler";
-import requireAuth from "../middleware/auth";
+import { analyzeSymptoms, bookAppointment, getUserAppointments, cancelAppointment, getAvailableDoctors, analyzeSymptomsVoice } from "../controllers/appointmentController.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
+import requireAuth from "../middleware/auth.js";
 const router = express.Router();
 router.post("/analyze", asyncHandler(analyzeSymptoms));
 router.post("/book", requireAuth, asyncHandler(bookAppointment));

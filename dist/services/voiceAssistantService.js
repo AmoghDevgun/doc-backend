@@ -1,7 +1,7 @@
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import { Readable } from "stream";
 import { createClient } from "@supabase/supabase-js";
-import { config } from "../config/env";
+import { config } from "../config/env.js";
 const elevenlabs = new ElevenLabsClient({ apiKey: process.env.ELEVENLABS_API_KEY });
 const supabase = createClient(config.supabaseUrl, config.supabaseServiceKey);
 async function ensureBucket() {

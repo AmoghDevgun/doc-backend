@@ -1,8 +1,8 @@
-import { anonymizeData } from "../services/anonymizationService";
-import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService";
-import { textToSpeech } from "../services/voiceAssistantService";
-import Appointment from "../models/Appointment";
-import Doctor from "../models/Doctor";
+import { anonymizeData } from "../services/anonymizationService.js";
+import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService.js";
+import { textToSpeech } from "../services/voiceAssistantService.js";
+import Appointment from "../models/Appointment.js";
+import Doctor from "../models/Doctor.js";
 /* -------------------- ANALYZE SYMPTOMS -------------------- */
 export async function analyzeSymptoms(req, res) {
     try {

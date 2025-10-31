@@ -6,9 +6,9 @@ import {
 	cancelAppointment,
     getAvailableDoctors,
     analyzeSymptomsVoice
-} from "../controllers/appointmentController"
-import { asyncHandler } from "../middleware/asyncHandler"
-import requireAuth from "../middleware/auth"
+} from "../controllers/appointmentController.js"
+import { asyncHandler } from "../middleware/asyncHandler.js"
+import requireAuth from "../middleware/auth.js"
 
 const router = express.Router()
 

@@ -1,8 +1,8 @@
 import { Router } from "express";
 // ✅ Import the new controller functions
-import { uploadAndAnalyzeReport, getRecordSummary, getAllUserRecords } from "../controllers/recordsController";
-import requireAuth from "../middleware/auth";
-import { asyncHandler } from "../middleware/asyncHandler";
+import { uploadAndAnalyzeReport, getRecordSummary, getAllUserRecords } from "../controllers/recordsController.js";
+import requireAuth from "../middleware/auth.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 const router = Router();
 // --- POST /api/records/upload ---
 // Uploads and analyzes a new report

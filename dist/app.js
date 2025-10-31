@@ -1,12 +1,12 @@
 import express from "express";
 import cors from "cors";
-import { connectMongo } from "./config/db";
-import { config } from "./config/env";
-import errorHandler from "./middleware/errorHandler";
-import authRoutes from "./routes/authRoutes";
-import appointmentRoutes from "./routes/appointmentRoutes";
-import voiceRoutes from './routes/voiceRoutes';
-import recordsRoutes from "./routes/recordsRoutes";
+import { connectMongo } from "./config/db.js";
+import { config } from "./config/env.js";
+import errorHandler from "./middleware/errorHandler.js";
+import authRoutes from "./routes/authRoutes.js";
+import appointmentRoutes from "./routes/appointmentRoutes.js";
+import voiceRoutes from './routes/voiceRoutes.js';
+import recordsRoutes from "./routes/recordsRoutes.js";
 /*
 import appointmentRoutes from "./routes/appointmentRoutes.ts"
 import doctorRoutes from "./routes/doctorRoutes.ts"

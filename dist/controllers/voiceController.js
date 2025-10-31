@@ -1,10 +1,10 @@
-import { detectIntent } from "../services/intentService";
-import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService";
-import { textToSpeech } from "../services/voiceAssistantService";
-import Appointment from "../models/Appointment";
-import Doctor from "../models/Doctor";
-import Record from "../models/Records";
-import User from "../models/Users";
+import { detectIntent } from "../services/intentService.js";
+import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService.js";
+import { textToSpeech } from "../services/voiceAssistantService.js";
+import Appointment from "../models/Appointment.js";
+import Doctor from "../models/Doctor.js";
+import Record from "../models/Records.js";
+import User from "../models/Users.js";
 export async function processVoice(req, res) {
     try {
         const { text } = req.body;

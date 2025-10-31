@@ -1,12 +1,12 @@
 import type { Request, Response } from "express"
-import { detectIntent } from "../services/intentService"
-import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService"
-import { getAvailableDoctors } from "./appointmentController"
-import { textToSpeech } from "../services/voiceAssistantService"
-import Appointment from "../models/Appointment"
-import Doctor from "../models/Doctor"
-import Record from "../models/Records"
-import User from "../models/Users"
+import { detectIntent } from "../services/intentService.js"
+import { analyzeSymptomsWithAI } from "../services/symptomAnalysisService.js"
+import { getAvailableDoctors } from "./appointmentController.js"
+import { textToSpeech } from "../services/voiceAssistantService.js"
+import Appointment from "../models/Appointment.js"
+import Doctor from "../models/Doctor.js"
+import Record from "../models/Records.js"
+import User from "../models/Users.js"
 
 export async function processVoice(req: Request, res: Response)
 {

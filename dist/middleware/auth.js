@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { config } from "../config/env";
+import { config } from "../config/env.js";
 export function requireAuth(req, res, next) {
     const auth = req.headers.authorization || "";
     const [scheme, token] = auth.split(" ");

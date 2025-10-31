@@ -4,9 +4,9 @@ import {
     uploadAndAnalyzeReport, 
     getRecordSummary, 
     getAllUserRecords 
-} from "../controllers/recordsController";
-import requireAuth from "../middleware/auth";
-import { asyncHandler } from "../middleware/asyncHandler";
+} from "../controllers/recordsController.js";
+import requireAuth from "../middleware/auth.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 
 const router = Router();
 
